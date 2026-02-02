@@ -1,0 +1,839 @@
+/*
+Theme Name: Baidu Pure Theme
+Theme URI: https://github.com/sgvps-cn/Baidu-Pure-Theme
+Author: 星耀云
+Author URI: https://github.com/sgvps-cn/Baidu-Pure-Theme
+Description: A lightweight, no-dependency, SEO-optimized theme for Baidu. Features Glassmorphism UI, Deep SEO Engine, and Native Dark Mode.
+Version: 1.2.0
+Text Domain: baidu-pure
+Tags: seo, baidu, minimal, glassmorphism, responsive, dark-mode, two-columns, right-sidebar
+*/
+
+:root {
+	/* Glassmorphism Variables */
+	--color-bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+	--glass-bg: rgba(255, 255, 255, 0.65);
+	--glass-border: rgba(255, 255, 255, 0.4);
+	--glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+	--glass-blur: blur(12px);
+	
+	--color-text: #2d3748;
+	--color-primary: #0056b3;
+	--color-secondary: #718096;
+	--color-border: rgba(0, 0, 0, 0.05);
+	
+	--font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	--spacing-unit: 1.5rem;
+	--container-width: 1200px;
+	--radius-lg: 16px;
+}
+
+/* Dark Mode Overrides */
+.dark-mode {
+	--color-bg-gradient: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+	--glass-bg: rgba(26, 32, 44, 0.6);
+	--glass-border: rgba(255, 255, 255, 0.08);
+	--glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+	
+	--color-text: #e2e8f0;
+	--color-primary: #63b3ed;
+	--color-secondary: #a0aec0;
+	--color-border: rgba(255, 255, 255, 0.05);
+}
+
+/* Reset & Base */
+*, *::before, *::after { box-sizing: border-box; }
+body {
+	margin: 0;
+	font-family: var(--font-main);
+	background: var(--color-bg-gradient);
+	background-attachment: fixed; /* Parallax-like effect */
+	color: var(--color-text);
+	line-height: 1.7;
+	min-height: 100vh;
+	transition: color 0.3s;
+}
+a { color: var(--color-primary); text-decoration: none; transition: opacity 0.2s; }
+a:hover { opacity: 0.8; }
+img { max-width: 100%; height: auto; border-radius: 8px; }
+
+/* Layout */
+.site {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	padding: 2rem 1rem;
+}
+.site-header, .site-main, .site-footer {
+	width: 100%;
+	max-width: var(--container-width);
+	margin: 0 auto;
+}
+.site-main { flex: 1; }
+
+/* Glass Components Mixin */
+.site-header, 
+.site-main > article, 
+.widget, 
+.site-footer,
+.main-navigation ul {
+	background: var(--glass-bg);
+	backdrop-filter: var(--glass-blur);
+	-webkit-backdrop-filter: var(--glass-blur);
+	border: 1px solid var(--glass-border);
+	box-shadow: var(--glass-shadow);
+	border-radius: var(--radius-lg);
+	margin-bottom: 2rem;
+	padding: 2rem;
+}
+
+/* Header */
+.site-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1.5rem 2rem;
+	position: sticky;
+	top: 1rem;
+	z-index: 100;
+}
+.site-title {
+	margin: 0;
+	font-size: 1.5rem;
+	font-weight: 800;
+	letter-spacing: -0.5px;
+}
+.site-title a { color: var(--color-text); }
+.site-description { display: none; }
+
+/* Navigation */
+.main-navigation {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.main-navigation ul {
+	display: flex;
+	gap: 1.5rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	background: none; /* Remove glass from inner ul in desktop */
+	box-shadow: none;
+	border: none;
+	backdrop-filter: none;
+}
+.menu-toggle { display: none; }
+
+/* Dark Mode Toggle */
+.dark-mode-toggle {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0;
+    color: var(--color-text);
+    transition: all 0.3s ease;
+}
+.dark-mode-toggle:hover { transform: scale(1.1); }
+
+/* Mobile Menu */
+@media (max-width: 600px) {
+	.site-header { padding: 1rem; }
+	.menu-toggle {
+		display: block;
+		background: none;
+		border: 1px solid var(--color-border);
+		border-radius: 8px;
+		color: var(--color-text);
+		padding: 0.5rem 1rem;
+		cursor: pointer;
+	}
+	.main-navigation ul {
+		display: none;
+		flex-direction: column;
+		position: absolute;
+		top: 100%;
+		left: 0;
+		right: 0;
+		margin-top: 1rem;
+		/* Re-apply glass for mobile dropdown */
+		background: var(--glass-bg);
+		backdrop-filter: var(--glass-blur);
+		-webkit-backdrop-filter: var(--glass-blur);
+		border: 1px solid var(--glass-border);
+		box-shadow: var(--glass-shadow);
+		padding: 1.5rem;
+		z-index: 101;
+	}
+	.main-navigation.toggled ul { display: flex; }
+}
+
+/* Posts (Global Base Styles) */
+.site-main > article { 
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Card Layout (Scoped to Blog/Archive/Search Only) */
+.blog .site-main > article,
+.archive .site-main > article,
+.search .site-main > article {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Ensure image corners are clipped */
+}
+
+.blog .site-main > article:hover,
+.archive .site-main > article:hover,
+.search .site-main > article:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.15);
+}
+
+/* Desktop Flex Layout (Card Specific) */
+@media (min-width: 768px) {
+    .blog .site-main > article,
+    .archive .site-main > article,
+    .search .site-main > article {
+        flex-direction: row;
+        align-items: stretch;
+        padding: 0; /* Remove internal padding to let image touch edges */
+        height: 200px; /* Compact height */
+    }
+    
+    .blog .site-main > article .post-thumbnail,
+    .archive .site-main > article .post-thumbnail,
+    .search .site-main > article .post-thumbnail {
+        width: 35%; /* Slightly narrower image */
+        margin: 0;
+        height: auto;
+        min-height: 100%; /* Fill full height */
+    }
+    
+    .blog .site-main > article .post-content,
+    .archive .site-main > article .post-content,
+    .search .site-main > article .post-content {
+        width: 65%;
+        padding: 1.5rem; /* Tighter padding */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow: hidden; /* Hide overflow content */
+    }
+    
+    .blog .entry-content,
+    .archive .entry-content,
+    .search .entry-content {
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* Limit to 2 lines */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 0.95rem; 
+        line-height: 1.6em; /* Fixed unit */
+        max-height: 3.2em;  /* Exactly 2 lines (1.6 * 2) */
+        color: var(--color-secondary);
+        margin-top: 0.5rem;
+    }
+}
+
+.post-thumbnail {
+    margin: -2rem -2rem 1.5rem -2rem; /* Pull image to edges of card padding */
+    height: 240px;
+    overflow: hidden;
+}
+.post-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    border-radius: 0; /* Let container handle radius */
+}
+.site-main > article:hover .post-thumbnail img {
+    transform: scale(1.05);
+}
+.post-content {
+    flex: 1;
+}
+
+.entry-title { 
+	margin-top: 0;
+	margin-bottom: 0.5rem; 
+	font-size: 1.75rem;
+}
+.entry-meta {
+	font-size: 0.85rem;
+	color: var(--color-secondary);
+	margin-bottom: 1.5rem;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+.entry-content { margin-top: 1rem; }
+
+/* Pagination */
+.navigation.pagination { 
+    margin: 4rem 0; 
+    text-align: center; 
+    width: 100%;
+}
+.nav-links { 
+    display: inline-flex; 
+    gap: 0.75rem; 
+    justify-content: center; 
+    align-items: center;
+    background: var(--glass-bg);
+    padding: 1rem 1.5rem;
+    border-radius: 50px; /* Pill shape container */
+    border: 1px solid var(--glass-border);
+    backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow);
+}
+.page-numbers {
+	padding: 0.5rem 1rem;
+    min-width: 2.5rem;
+    text-align: center;
+	border-radius: 20px;
+	color: var(--color-text);
+	transition: all 0.2s ease;
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.page-numbers:hover {
+    background: rgba(0,0,0,0.05);
+    color: var(--color-primary);
+    text-decoration: none;
+}
+.page-numbers.current {
+	background: var(--color-primary);
+	color: white;
+	box-shadow: 0 4px 10px rgba(0, 86, 179, 0.3);
+}
+.page-numbers.dots {
+    border: none;
+    background: transparent;
+}
+.dark-mode .page-numbers:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+/* Footer */
+.site-footer {
+	text-align: center;
+	font-size: 0.9rem;
+	color: var(--color-secondary);
+}
+
+/* Comments */
+.comment-list { padding: 0; list-style: none; }
+.comment-body {
+	background: rgba(255,255,255,0.3);
+	border-radius: 8px;
+	padding: 1.5rem;
+	margin-bottom: 1.5rem;
+}
+.dark-mode .comment-body { background: rgba(0,0,0,0.2); }
+.comment-form textarea, .comment-form input {
+	width: 100%;
+	padding: 1rem;
+	margin-bottom: 1rem;
+	border: 1px solid var(--glass-border);
+	background: rgba(255,255,255,0.5);
+	color: var(--color-text);
+	border-radius: 8px;
+}
+
+/* Widgets */
+.widget-title { 
+	font-size: 1.1rem; 
+	margin-bottom: 1.5rem; 
+	border-bottom: 2px solid var(--color-primary); 
+	display: inline-block;
+	padding-bottom: 0.5rem;
+}
+.widget ul { list-style: none; padding: 0; }
+.widget li { 
+	margin-bottom: 0.75rem; 
+	border-bottom: 1px solid var(--color-border); 
+	padding-bottom: 0.75rem; 
+}
+.widget li:last-child { border-bottom: none; }
+
+/* Topic Pages */
+.topic-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 3rem !important;
+    background: var(--glass-bg);
+    border-radius: var(--radius-lg);
+}
+.topic-header .page-title {
+    font-size: 2.5rem;
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+}
+.topic-header .archive-description {
+    font-size: 1.1rem;
+    color: var(--color-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+}
+.section-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding-left: 1rem;
+    border-left: 4px solid var(--color-primary);
+}
+.hot-posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+.hot-post-card {
+    background: var(--glass-bg);
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--glass-border);
+    transition: transform 0.2s;
+}
+.hot-post-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--color-primary);
+}
+.hot-post-card .entry-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Page Layout Fix (Appended) */
+.page .site-main > article {
+    background-color: var(--glass-bg);
+    padding: 2.5rem 3rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--glass-shadow);
+    border: 1px solid var(--glass-border);
+}
+@media (max-width: 768px) {
+    .page .site-main > article { padding: 1.5rem; }
+}
+
+/* Strong Fix for Code Blocks */
+.entry-content pre {
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    overflow-x: auto !important;
+    background: #f6f8fa !important;
+    color: #333 !important;
+    padding: 1rem !important;
+    border-radius: 8px !important;
+    border: 1px solid #eaecef !important;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace !important;
+    font-size: 0.9em !important;
+    line-height: 1.5 !important;
+    margin-bottom: 1.5rem !important;
+    max-width: 100%;
+}
+
+.dark-mode .entry-content pre {
+    background: #2d2d2d !important;
+    color: #e2e8f0 !important;
+    border-color: #404040 !important;
+}
+
+/* Fix Post Navigation: Split into two cards */
+.post-navigation .nav-links {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    gap: 1.5rem !important;
+    padding: 0 !important;
+}
+
+.post-navigation .nav-previous,
+.post-navigation .nav-next {
+    background: var(--glass-bg); /* Use glass styling individually */
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.5rem !important;
+    flex: 1;
+    min-width: 0; /* Allow text to truncate */
+    transition: transform 0.2s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.post-navigation .nav-previous:hover,
+.post-navigation .nav-next:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    background: #fff;
+}
+
+/* Fix text inside nav links */
+.post-navigation .nav-previous a,
+.post-navigation .nav-next a {
+    display: block;
+    color: var(--color-text);
+    text-decoration: none;
+    font-weight: 500;
+}
+.post-navigation .nav-subtitle {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--color-text-light);
+    margin-bottom: 0.2rem;
+    text-transform: uppercase;
+}
+.post-navigation .nav-title {
+    display: block;
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Fix Footer: Make transparent */
+.site-footer {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 2rem 0 !important;
+    text-align: center;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.site-footer .site-info {
+    color: var(--color-text-light);
+    font-size: 0.9rem;
+}
+
+/* Dark mode adjustments */
+.dark-mode .post-navigation .nav-previous:hover,
+.dark-mode .post-navigation .nav-next:hover {
+    background: #333;
+}
+
+/* Fix Dropdown Menus (Sub-items in Nav) */
+.main-navigation ul ul {
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    background: #fff !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+    border-radius: 8px !important;
+    border: 1px solid rgba(0,0,0,0.05) !important;
+    min-width: 180px !important;
+    padding: 0.5rem 0 !important;
+    z-index: 9999 !important;
+    display: none; /* Hidden by default, shown on hover */
+    flex-direction: column !important;
+}
+
+.main-navigation ul li:hover > ul,
+.main-navigation ul li:focus-within > ul {
+    display: block !important;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+.main-navigation ul ul li {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+}
+
+.main-navigation ul ul li a {
+    display: block !important;
+    padding: 0.5rem 1rem !important;
+    color: #333 !important;
+    line-height: 1.5 !important;
+    white-space: nowrap !important;
+}
+
+.main-navigation ul ul li a:hover {
+    background: #f5f5f5 !important;
+    color: var(--color-primary) !important;
+}
+
+/* Fix Nested Lists in Content (Sub-items in Posts) */
+.entry-content ul, 
+.entry-content ol {
+    margin-left: 0; 
+    padding-left: 1.5rem; 
+    list-style-position: outside;
+}
+
+.entry-content ul ul,
+.entry-content ol ol,
+.entry-content ul ol,
+.entry-content ol ul {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    margin-left: 1rem !important; /* Force indentation for sub-lists */
+    padding-left: 1rem !important;
+}
+
+.entry-content li {
+    margin-bottom: 0.25rem;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Fix Sub-menu Clickable Area */
+.main-navigation ul ul li {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.main-navigation ul ul li a {
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 0.75rem 1.5rem !important; /* Increase padding for better hit target */
+    margin: 0 !important;
+    text-decoration: none !important;
+}
+
+/* Fix Sidebar/Widget List Clickable Area */
+.widget ul li {
+    padding: 0 !important;
+    margin: 0 !important;
+    list-style: none;
+}
+
+.widget ul li a {
+    display: block !important;
+    width: 100% !important;
+    padding: 0.5rem 0 !important; /* Make the whole row clickable */
+    text-decoration: none !important;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.widget ul li a:hover {
+    background-color: rgba(0,0,0,0.02);
+    padding-left: 0.5rem !important; /* Add hover indent visual feedback */
+    transition: all 0.2s;
+}
+
+/* Ensure no other element blocks clicks */
+.main-navigation ul ul li a::before,
+.main-navigation ul ul li a::after {
+    pointer-events: none;
+}
+
+/* Fix Dropdown Gap and Alignment */
+.main-navigation ul li {
+    position: relative !important; /* Ensure submenu is positioned relative to this item */
+}
+
+.main-navigation ul ul {
+    top: 100% !important; /* Align exactly below the parent */
+    left: 50% !important; /* Center alignment */
+    transform: translateX(-50%) !important; /* Center alignment adjustment */
+    margin-top: 10px !important; /* Visual separation */
+    /* Ensure visual separation doesn't cause gap issue */
+}
+
+/* Create a transparent bridge to prevent mouseout when crossing gaps */
+.main-navigation ul ul::before {
+    content: '';
+    position: absolute;
+    top: -20px; /* Extend upwards to overlap with the parent LI */
+    left: 0;
+    width: 100%;
+    height: 20px; /* Height of the bridge */
+    background: transparent; /* Invisible */
+    z-index: 1;
+}
+
+/* Enhance hover stability */
+.main-navigation ul li:hover > ul,
+.main-navigation ul li:focus-within > ul {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    transition-delay: 0s; /* Show immediately */
+}
+
+.main-navigation ul ul {
+    /* Add a slight delay before hiding to forgive fast mouse movements */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Tags Styling */
+.tags-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    align-items: center;
+}
+
+.tags-links a {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    font-size: 0.85rem;
+    color: var(--color-primary);
+    background: rgba(0, 86, 179, 0.05); /* Light primary bg */
+    border: 1px solid rgba(0, 86, 179, 0.1);
+    border-radius: 50px; /* Pill shape */
+    text-decoration: none;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.tags-links a:hover {
+    background: var(--color-primary);
+    color: #fff;
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 86, 179, 0.2);
+}
+
+.tags-links::before {
+    content: '标签：'; /* Localized 'Tags:' */
+    font-weight: bold;
+    color: var(--color-secondary);
+    font-size: 0.9rem;
+    margin-right: 0.2rem;
+}
+
+/* Dark Mode Tags */
+.dark-mode .tags-links a {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #90cdf4;
+}
+.dark-mode .tags-links a:hover {
+    background: #90cdf4;
+    color: #1a202c;
+}
+
+/* Fix: Force Single Line Navigation */
+.site-header {
+    flex-wrap: nowrap !important;
+    white-space: nowrap !important;
+    overflow-x: visible !important; /* Allow menu to stick out if absolutely necessary, better than breaking */
+}
+
+.main-navigation {
+    width: auto !important;
+    flex-shrink: 1 !important; /* Allow nav container to shrink if needed, but contents will handle strictness */
+    overflow: visible !important;
+}
+
+.main-navigation ul {
+    display: flex !important;
+    flex-wrap: nowrap !important; /* CRITICAL: Do not wrap menu items */
+    align-items: center !important;
+    gap: 1rem !important; /* Reduce gap slightly to fit more items */
+}
+
+.main-navigation li {
+    flex-shrink: 0 !important; /* Do not shrink individual list items */
+}
+
+.main-navigation a {
+    white-space: nowrap !important; /* CRITICAL: Do not wrap text inside links */
+    display: flex !important;
+    align-items: center !important; 
+    gap: 0.25rem !important; /* Space between icon and text */
+}
+
+.site-title {
+    flex-shrink: 0 !important; /* Do not shrink logo/title */
+    white-space: nowrap !important;
+    padding-right: 1.5rem !important;
+}
+
+/* Ensure Logo text doesn't break */
+.site-branding {
+    flex-shrink: 0 !important;
+    min-width: max-content !important;
+}
+
+/* Responsive adjustment for tablet/smaller desktops */
+@media (max-width: 1100px) {
+    .site-header {
+        padding: 1rem !important;
+    }
+    .main-navigation ul {
+        gap: 0.5rem !important; /* Smaller gap on smaller screens */
+    }
+    .main-navigation a {
+        font-size: 0.9rem !important; /* Slightly smaller text */
+        padding: 0.5rem !important; 
+    }
+}
+
+/* =========================================
+   Fix: Submenu Persistent Display Issue
+   ========================================= */
+
+/* 1. Ensure submenu is hidden by default with high specificity */
+.main-navigation ul ul.sub-menu {
+    visibility: hidden !important;
+    opacity: 0 !important;
+    position: absolute !important; /* Force absolute positioning */
+    top: 100%;
+    left: 0;
+    z-index: 999;
+    background: rgba(255, 255, 255, 0.95); /* Glassmorph background base */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 10px 0;
+    min-width: 180px;
+    
+    /* Layout control */
+    display: flex !important; /* Keep flex for layout but hide visually */
+    flex-direction: column;
+    
+    /* Animation setup */
+    transform: translateY(10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none; /* Prevent clicks when hidden */
+}
+
+/* 2. Show submenu on hover/focus */
+.main-navigation li:hover > ul.sub-menu,
+.main-navigation li:focus-within > ul.sub-menu {
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* 3. Ensure sub-menu items are correctly aligned */
+.main-navigation ul ul.sub-menu li {
+    width: 100%;
+    display: block;
+    margin: 0;
+}
+
+.main-navigation ul ul.sub-menu li a {
+    width: 100%;
+    padding: 10px 20px;
+    justify-content: flex-start; /* Align text left */
+}
+
+/* =========================================
+   Fix: Duplicate 'Tags:' Label
+   ========================================= */
+.tags-links::before {
+    content: none !important;
+    display: none !important;
+    margin: 0 !important;
+}
